@@ -3,8 +3,8 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { parse } from "querystring";
 
 let html = ({ linkReferer, linkResult }) => `
-<h1>Moore URL</h1>
-<h2>Your URL has been shortened:</h2>
+<h1>Moore Links</h1>
+<h2>Your link has been shortened:</h2>
 <a href="//${linkReferer}${linkResult}">${linkReferer}${linkResult}</a>
 `;
 

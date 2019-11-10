@@ -2,7 +2,7 @@ import "source-map-support/register";
 import { APIGatewayProxyHandler } from "aws-lambda";
 
 let html = `
-<h1>Moore URL</h1>
+<h1>Moore Links</h1>
 <form method="post" action="">
   <label for="link_to_short">Type your link:</labe;>
   <input type="text" id="link_to_short" name="link_to_short" />

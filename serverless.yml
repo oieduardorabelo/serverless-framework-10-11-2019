@@ -19,6 +19,11 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     SLS_STAGE: ${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Action:
+        - dynamodb:GetItem
+      Resource: !GetAtt ParsedLinksDB.Arn
+      Effect: Allow
 
 functions:
   home:
@@ -54,4 +59,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 2
           WriteCapacityUnits: 2
-        TableName: ${opt:stage, self:provider.stage}-shortened-urls
+        TableName: ${opt:stage, self:provider.stage}-parsed-links
