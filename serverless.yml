@@ -1,6 +1,8 @@
 service:
   name: serverless-framework-10-11-2019
 
+frameworkVersion: ">=1.57.0 <2.0.0"
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
@@ -18,9 +20,15 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 
 functions:
-  hello:
-    handler: handler.hello
+  home:
+    handler: lambdas/home.handler
     events:
       - http:
+          path: /
           method: get
-          path: hello
+  create:
+    handler: lambdas/create.handler
+    events:
+      - http:
+          path: /
+          method: post
