@@ -14,7 +14,7 @@ let createSlug = ({ size }) =>
 let html = ({ linkReferer, linkShort }) => `
 <h1>Moore Links</h1>
 <h2>Your link has been shortened:</h2>
-<a href="//${linkReferer}/${linkShort}">${linkReferer}/${linkShort}</a>
+<a href="${linkReferer}/${linkShort}">${linkReferer}/${linkShort}</a>
 `;
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
