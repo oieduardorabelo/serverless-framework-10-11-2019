@@ -12,6 +12,7 @@ let html = `
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(JSON.stringify(event));
+
   return {
     statusCode: 200,
     body: html,
