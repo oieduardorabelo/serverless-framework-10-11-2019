@@ -10,10 +10,10 @@ let html = (prefix) => `
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(JSON.stringify(event));
-  let { link } = parse(event.body);
+  let { link_to_short } = parse(event.body);
   return {
     statusCode: 200,
-    body: html(link),
+    body: html(link_to_short),
     headers: {
       'Content-Type': 'text/html',
       'Content-Length': html.length,

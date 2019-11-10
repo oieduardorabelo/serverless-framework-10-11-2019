@@ -4,8 +4,8 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 let html = `
 <h1>Moore URL</h1>
 <form method="post" action="">
-  <label for="url">Type your link:</labe;>
-  <input type="text" id="url" name="url" />
+  <label for="link_to_short">Type your link:</labe;>
+  <input type="text" id="link_to_short" name="link_to_short" />
   <button type="submit">Shorten it!</button>
 </form>
 `;
