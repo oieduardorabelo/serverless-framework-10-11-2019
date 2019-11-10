@@ -4,9 +4,16 @@ service:
 frameworkVersion: ">=1.57.0 <2.0.0"
 
 custom:
+  stage: ${opt:stage, self:provider.stage}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  devDynamoDBCapacity:
+    ReadCapacityUnits: 1
+    WriteCapacityUnits: 1
+  prodDynamoDBCapacity:
+    ReadCapacityUnits: 4
+    WriteCapacityUnits: 4
 
 plugins:
   - serverless-webpack
@@ -18,7 +25,7 @@ provider:
     minimumCompressionSize: 1024
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    SLS_STAGE: ${opt:stage, self:provider.stage}
+    SLS_STAGE: ${self:custom.stage}
     DDB_TABLE_NAME: !Ref ParsedLinksDB
   iamRoleStatements:
     - Action:
@@ -58,7 +65,5 @@ resources:
         KeySchema:
           - AttributeName: slug
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 2
-          WriteCapacityUnits: 2
-        TableName: ${opt:stage, self:provider.stage}-parsed-links
+        ProvisionedThroughput: ${self:custom.${self:custom.stage}DynamoDBCapacity}
+        TableName: ${self:custom.stage}-parsed-links
