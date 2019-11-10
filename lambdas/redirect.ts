@@ -1,11 +1,11 @@
 import "source-map-support/register";
 import { APIGatewayProxyHandler } from "aws-lambda";
-import * as AWS from "aws-sdk";
+import * as DynamoDB from "aws-sdk/lib/dynamodb/document_client";
 
 let ddbConfig = {
   tableName: process.env.DDB_TABLE_NAME
 };
-let ddbClient = new AWS.DynamoDB.DocumentClient();
+let ddbClient = new DynamoDB.DocumentClient();
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(JSON.stringify(event));
