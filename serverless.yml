@@ -5,15 +5,10 @@ frameworkVersion: ">=1.57.0 <2.0.0"
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+  config: ${file(config/${self:custom.stage}.yml)}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-  devDynamoDBCapacity:
-    ReadCapacityUnits: 1
-    WriteCapacityUnits: 1
-  prodDynamoDBCapacity:
-    ReadCapacityUnits: 4
-    WriteCapacityUnits: 4
 
 plugins:
   - serverless-webpack
@@ -65,5 +60,5 @@ resources:
         KeySchema:
           - AttributeName: slug
             KeyType: HASH
-        ProvisionedThroughput: ${self:custom.${self:custom.stage}DynamoDBCapacity}
+        ProvisionedThroughput: ${self:custom.config.DynamoDBCapacity}
         TableName: ${self:custom.stage}-parsed-links

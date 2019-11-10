@@ -1,0 +1,3 @@
+DynamoDBCapacity:
+  ReadCapacityUnits: 4
+  WriteCapacityUnits: 4
