@@ -2,5 +2,5 @@
 
 ```
 sls create -t aws-nodejs-typescript
-sls deploy --aws-profile
+sls deploy --aws-profile YOUR_AWS_PROFILE
 ```
