@@ -24,7 +24,8 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     let { link_to_short: linkTarget } = parse(event.body);
     let linkReferer = event.headers.Referer;
     let linkSlug = createSlug({ size: 4 });
-    let linkRecord = await ddbClient
+
+    await ddbClient
       .put({
         TableName: ddbConfig.tableName,
         Item: {
@@ -38,7 +39,7 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
         }
       })
       .promise();
-    console.log(linkRecord);
+
     return {
       statusCode: 200,
       body: html({ linkReferer, linkShort: linkSlug }),
