@@ -19,6 +19,7 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     SLS_STAGE: ${opt:stage, self:provider.stage}
+    DDB_TABLE_NAME: !Ref ParsedLinksDB
   iamRoleStatements:
     - Action:
         - dynamodb:GetItem
