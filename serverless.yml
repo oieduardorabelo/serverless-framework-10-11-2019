@@ -32,3 +32,9 @@ functions:
       - http:
           path: /
           method: post
+  redirect:
+    handler: lambdas/redirect.handler
+    events:
+      - http:
+          path: /{slug}
+          method: get

@@ -1,6 +1,6 @@
-import 'source-map-support/register';
-import { APIGatewayProxyHandler } from 'aws-lambda';
-import { parse } from 'querystring';
+import "source-map-support/register";
+import { APIGatewayProxyHandler } from "aws-lambda";
+import { parse } from "querystring";
 
 let html = ({ linkReferer, linkResult }) => `
 <h1>Moore URL</h1>
@@ -18,8 +18,8 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     statusCode: 200,
     body: html({ linkReferer, linkResult }),
     headers: {
-      'Content-Type': 'text/html',
-      'Content-Length': html.length,
+      "Content-Type": "text/html",
+      "Content-Length": html.length
     }
   };
-}
+};
