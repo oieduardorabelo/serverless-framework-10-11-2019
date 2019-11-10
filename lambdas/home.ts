@@ -1,4 +1,3 @@
-import "source-map-support/register";
 import { APIGatewayProxyHandler } from "aws-lambda";
 
 let html = `

@@ -23,6 +23,7 @@ provider:
   iamRoleStatements:
     - Action:
         - dynamodb:GetItem
+        - dynamodb:PutItem
       Resource: !GetAtt ParsedLinksDB.Arn
       Effect: Allow
 

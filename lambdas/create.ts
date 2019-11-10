@@ -1,4 +1,3 @@
-import "source-map-support/register";
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { parse } from "querystring";
 import * as AWS from "aws-sdk";
@@ -15,7 +14,7 @@ let createSlug = ({ size }) =>
 let html = ({ linkReferer, linkShort }) => `
 <h1>Moore Links</h1>
 <h2>Your link has been shortened:</h2>
-<a href="//${linkReferer}${linkShort}">${linkReferer}${linkShort}</a>
+<a href="//${linkReferer}/${linkShort}">${linkReferer}/${linkShort}</a>
 `;
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
@@ -25,20 +24,21 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     let { link_to_short: linkTarget } = parse(event.body);
     let linkReferer = event.headers.Referer;
     let linkSlug = createSlug({ size: 4 });
-
-    await ddbClient.put({
-      TableName: ddbConfig.tableName,
-      Item: {
-        slug: linkSlug,
-        long_link: linkTarget
-      },
-      Expected: {
-        long_link: {
-          Exists: false
+    let linkRecord = await ddbClient
+      .put({
+        TableName: ddbConfig.tableName,
+        Item: {
+          slug: linkSlug,
+          long_link: linkTarget
+        },
+        Expected: {
+          long_link: {
+            Exists: false
+          }
         }
-      }
-    });
-
+      })
+      .promise();
+    console.log(linkRecord);
     return {
       statusCode: 200,
       body: html({ linkReferer, linkShort: linkSlug }),
