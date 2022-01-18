@@ -1,21 +1,27 @@
-service:
-  name: serverless-framework-10-11-2019
+service: serverless-framework-10-11-2019
 
-frameworkVersion: ">=1.57.0 <2.0.0"
+frameworkVersion: "2.72.0"
+configValidationMode: error
+variablesResolutionMode: 20210326
+deprecationNotificationMode: error
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-southeast-2'}
   config: ${file(config/${self:custom.stage}.yml)}
-  webpack:
-    webpackConfig: ./webpack.config.js
-    includeModules: true
+  prune:
+    automatic: true
+    number: 0 # keep only $LATEST
 
 plugins:
-  - serverless-webpack
+  - serverless-esbuild
+  - serverless-prune-plugin
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs14.x
+  region: ${self:custom.region}
+  lambdaHashingVersion: 20201221
   apiGateway:
     minimumCompressionSize: 1024
   environment:
