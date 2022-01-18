@@ -1,27 +1,29 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { parse } from "querystring";
+import { nanoid } from "nanoid";
 import * as AWS from "aws-sdk";
+import { URL } from "url";
 
 let ddbConfig = {
   tableName: process.env.DDB_TABLE_NAME
 };
 let ddbClient = new AWS.DynamoDB.DocumentClient();
-let createSlug = ({ size }) =>
-  Math.random()
-    .toString(16)
-    .substr(2, size);
+let createSlug = ({ size }) => nanoid(size);
 
 let html = ({ linkReferer, linkShort }) => `
 <h1>Moore Links</h1>
 <h2>Your link has been shortened:</h2>
-<a href="${linkReferer}/${linkShort}">${linkReferer}/${linkShort}</a>
+<a href="${linkReferer}${linkShort}">${linkReferer}${linkShort}</a>
 `;
+
+type IBODY = { link_to_short: string };
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(JSON.stringify(event));
 
   try {
-    let { link_to_short: linkTarget } = parse(event.body);
+    let { link_to_short } = parse(event.body) as IBODY;
+    let targetUrl = new URL(link_to_short);
     let linkReferer = event.headers.Referer;
     let linkSlug = createSlug({ size: 4 });
 
@@ -30,7 +32,7 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
         TableName: ddbConfig.tableName,
         Item: {
           slug: linkSlug,
-          long_link: linkTarget
+          long_link: targetUrl.href
         },
         Expected: {
           long_link: {
@@ -49,7 +51,10 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
       }
     };
   } catch (error) {
-    let body = "Something went wrong. Please try again.";
+    let body = `
+    <p>Something went wrong. Enter a valid URL or try again later!</p>
+    <p><a href="${event.headers.Referer}">Go back</a></p>
+    `;
     return {
       statusCode: 400,
       body,
